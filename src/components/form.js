@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import * as yup from "yup";
 import axios from "axios";
 
 // **** yup js library ****
 const fromSchema = yup.object().shape({
-    name: yup.string().required("Name is required"),
-    phone: yup
-      .string("optional"),
+  name: yup.string().required("Name is a required field"),
+    phone: yup.string().required("phone number is required "),
       pizza: yup.string().required("required"),
       size: yup.string().required("required"),
       sause1: yup.boolean().oneOf([true], "choice"),
@@ -57,7 +56,7 @@ export default function Form() {
           })
         })
     
-        }
+        };
 
    // **** onsubmit ****
    const thOnSubmit = e => {
@@ -65,16 +64,16 @@ export default function Form() {
     console.log(" submitted!");
     axios
     .post("https://reqres.in/api/users", foms)
-    .then(response => console.log(response))
+    .then(resp => console.log(resp))
     .catch(err => console.log(err));
   };
   
 // **** onchange ****
   const theOnChange = e => {
     e.persist();
-    if (e.target.name === "phone") {
+    
         validate(e);
-      }
+    
       let value =
       e.target.type === "checkbox" ? e.target.checked : e.target.value;
     setFoms({ ...foms, [e.target.name]: value });
@@ -82,7 +81,7 @@ export default function Form() {
 
 return(
     
-   <form className="forms"onSubmit={thOnSubmit}>
+   <form className="form"onSubmit={thOnSubmit}>
   
 <label htmlFor="name">
         Name:
@@ -94,7 +93,7 @@ return(
           value={foms.name}
           onChange={theOnChange}
         />
-         {errorState.name.length > 0 ? <p className='error'>{errorState.name}</p> : null}
+         {errorState.name.length > 0 ? (<p className="error">{errorState.name}</p>) : null}
       </label>
 
       <label htmlFor="phone">
@@ -115,6 +114,7 @@ return(
   <select 
          name="pizza"
           id="pizza"
+          value={foms.pizza}
           onChange={theOnChange }
           >
           <option value="">--select--</option>
@@ -131,7 +131,7 @@ return(
   <select 
          name="size"
           id="size"
-        //   onChange={theOnChange }
+          onChange={theOnChange }
           >
           <option value="">--select--</option>
           <option value="Larg">Larg</option>
